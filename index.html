@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Muscle Buddy – Muscle Jigsaw Puzzle</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg1:#fff1f7;--bg2:#eaf6ff;--card:#fff;--ink:#5a4a6a;--sub:#8a7a9a;--pk:#ff7eb6;--pk2:#ffd3e6;--lv:#9b8cff;--lv2:#e4defe;--mt:#7fdcb4;--bad:#ff6b6b;--art:#fff;--sh:#f0b5d0;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg1:#241a2e;--bg2:#1a2030;--card:#33283f;--ink:#fbeaff;--sub:#c9b5dc;--pk:#ff8fc2;--pk2:#5a3350;--lv:#b3a8ff;--lv2:#443a70;--mt:#6bd9ab;--sh:#15101c}}
+:root[data-theme="dark"]{--bg1:#241a2e;--bg2:#1a2030;--card:#33283f;--ink:#fbeaff;--sub:#c9b5dc;--pk:#ff8fc2;--pk2:#5a3350;--lv:#b3a8ff;--lv2:#443a70;--mt:#6bd9ab;--sh:#15101c}
+*{box-sizing:border-box;-webkit-user-select:none;user-select:none}
+html,body{height:100%;margin:0}
+body{font-family:'Fredoka','Mali',sans-serif;color:var(--ink);background:linear-gradient(160deg,var(--bg1),var(--bg2));display:flex;flex-direction:column;overflow:hidden}
+.bub{position:fixed;border-radius:50%;background:var(--pk2);opacity:.45;z-index:0;animation:fl 9s ease-in-out infinite}
+@keyframes fl{50%{transform:translateY(-22px)}}
+header,main,.tray{position:relative;z-index:1}
+header{display:flex;align-items:center;gap:8px;padding:8px 12px;flex-wrap:wrap}
+.chip{background:var(--card);border:3px solid var(--pk2);border-radius:20px;padding:3px 12px;font-weight:700;font-size:.82rem;box-shadow:0 3px 0 var(--sh)}
+h1{font-size:1.1rem;margin:0;color:var(--pk);flex:1;min-width:110px;text-shadow:0 2px 0 var(--pk2)}
+.btn{border:0;background:var(--pk);color:#fff;border-radius:20px;padding:6px 12px;font:inherit;font-weight:700;font-size:.85rem;cursor:pointer;box-shadow:0 4px 0 #d9568f}
+.btn:active{transform:translateY(3px);box-shadow:0 1px 0 #d9568f}
+.btn.lv{background:var(--lv);box-shadow:0 4px 0 #6f60d8}
+.mas{display:flex;align-items:center;gap:10px;max-width:760px;margin:0 auto 8px;padding:0 4px}
+.mi{flex:0 0 58px;height:58px;border-radius:50%;background:linear-gradient(#ffe08a,#ffb86b);border:4px solid #fff;display:grid;place-items:center;font-size:30px;box-shadow:0 4px 0 #f2a65a;animation:bn 2.4s infinite}
+@keyframes bn{50%{transform:translateY(-4px) rotate(-4deg)}}
+.say{position:relative;flex:1;background:var(--card);border:3px solid var(--lv2);border-radius:18px;padding:7px 12px;font-size:.84rem;line-height:1.4;box-shadow:0 3px 0 var(--lv2)}
+.say::before{content:"";position:absolute;left:-10px;top:18px;border:8px solid transparent;border-right-color:var(--lv2);border-left:0}
+.dots{display:flex;gap:6px;justify-content:center;margin-bottom:6px}
+.dots i{width:30px;height:9px;border-radius:9px;background:var(--lv2)}.dots i.on{background:var(--pk)}.dots i.dn{background:var(--mt)}
+main{flex:1;overflow:auto;padding:6px 12px 10px}
+.bn{text-align:center;font-weight:700;color:var(--lv);margin:0 auto 8px;font-size:.95rem}
+.board{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;max-width:940px;margin:0 auto}
+.slot{--c:var(--pk2);min-height:158px;border:4px dashed var(--c);border-radius:22px;background:var(--card);padding:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;font-size:.76rem;color:var(--sub);position:relative;transition:.15s;cursor:pointer;line-height:1.35}
+.slot .n{position:absolute;top:-9px;left:-6px;background:var(--c);color:#fff;border-radius:50%;width:26px;height:26px;font-size:.78rem;display:grid;place-items:center;font-weight:700;border:3px solid var(--card);text-shadow:0 1px 1px rgba(0,0,0,.25)}
+.slot .q{font-size:1.6rem;opacity:.7}
+.slot.over{transform:scale(1.04);background:var(--bg1)}
+.slot.glow{animation:gl .7s 4}
+@keyframes gl{50%{box-shadow:0 0 0 7px #ffd86b;transform:scale(1.04)}}
+.slot.ok{border-style:solid;cursor:default;box-shadow:0 4px 0 var(--c)}
+.slot.shake{animation:sh .35s;border-color:var(--bad)}
+@keyframes sh{25%{transform:translateX(-7px)}75%{transform:translateX(7px)}}
+.nm{font-weight:700;color:var(--ink);font-size:.86rem;margin-top:3px}
+.ar{background:var(--art);border-radius:14px;width:100%;border:2px solid var(--lv2)}
+.ar svg{display:block;width:100%;height:auto}
+.slot.ok .ds{font-size:.72rem}
+.tray{background:var(--card);border-top:4px solid var(--pk2);border-radius:24px 24px 0 0;padding:8px 12px 10px}
+.th{display:flex;justify-content:space-between;align-items:center;gap:6px;font-size:.78rem;font-weight:700;color:var(--pk);margin-bottom:2px}
+.pcs{display:flex;gap:18px;overflow-x:auto;padding:14px 10px 8px;min-height:130px}
+.pc{flex:0 0 112px;background:var(--card);border:3px solid var(--lv);border-radius:16px;padding:5px;cursor:grab;text-align:center;font-size:.72rem;font-weight:700;position:relative;box-shadow:0 4px 0 var(--lv2)}
+.pc::before,.pc::after{content:"";position:absolute;width:16px;height:16px;border-radius:50%;background:var(--card);border:3px solid var(--lv)}
+.pc::before{top:-12px;left:50%;margin-left:-8px;border-bottom-color:transparent;z-index:-1}
+.pc::after{right:-12px;top:50%;margin-top:-8px;border-left-color:transparent;z-index:-1}
+.pc.sel{outline:4px solid #ffd86b;transform:translateY(-5px)}
+.pc .t{margin-top:3px;line-height:1.2}
+.ov{position:fixed;inset:0;background:rgba(70,40,90,.55);display:none;align-items:center;justify-content:center;z-index:50;padding:16px}
+.md{background:var(--card);border:5px solid var(--pk2);border-radius:30px;padding:20px 22px;max-width:430px;width:100%;text-align:center;max-height:92%;overflow:auto;animation:pop .35s}
+@keyframes pop{from{transform:scale(.6);opacity:0}}
+.md h2{margin:0;color:var(--pk)}.md p{margin:6px 0;font-size:.9rem}
+.stars{font-size:2.2rem;letter-spacing:5px}
+.fact{background:var(--lv2);border-radius:16px;padding:9px 12px;font-size:.82rem;text-align:left;margin-top:8px;line-height:1.5}
+h1{background:linear-gradient(90deg,#ff7eb6,#9b8cff,#7fdcb4,#ffb86b,#ff7eb6);background-size:300% 100%;-webkit-background-clip:text;background-clip:text;color:transparent!important;text-shadow:none;animation:rb 6s linear infinite}@keyframes rb{to{background-position:300% 0}}.sp{position:fixed;pointer-events:none;z-index:70;font-size:18px;font-weight:700;color:#ff7a3d;text-shadow:0 2px 0 #fff;animation:spk .9s ease-out forwards}@keyframes spk{to{transform:translate(var(--dx),var(--dy)) scale(.3);opacity:0}}.slot.ok .ar{animation:flip .6s}@keyframes flip{from{transform:rotateY(90deg) scale(.4)}}.slot.ok{animation:jel .5s}@keyframes jel{30%{transform:scale(1.12,.9)}60%{transform:scale(.95,1.06)}}.pow{height:14px;max-width:760px;margin:0 auto 8px;background:var(--lv2);border-radius:10px;overflow:hidden;border:2px solid var(--card)}.pow i{display:block;height:100%;width:0;background:linear-gradient(90deg,#ff7eb6,#ffd86b,#7fdcb4);transition:width .5s}.pc:hover{transform:translateY(-5px) rotate(-3deg)}.pc.gold{border-color:#ffc400;box-shadow:0 0 16px #ffd86b,0 4px 0 #e0a800;animation:gd 1.2s infinite}@keyframes gd{50%{transform:scale(1.07)}}.pc.gold .t::after{content:" ✨x2";color:#e0a800}.cmb{position:fixed;right:12px;top:64px;z-index:40;font-size:1.25rem;font-weight:700;color:#ff7a3d;background:var(--card);border:3px solid #ffb86b;border-radius:20px;padding:4px 14px;box-shadow:0 4px 0 #ffb86b;animation:pop .35s}.fever .bub{background:#ffd86b;opacity:.85}.fever .mi{animation-duration:.45s}.fever .board{filter:drop-shadow(0 0 10px #ffb86b)}.chip.low{background:#ff6b6b;color:#fff;border-color:#ffb3b3;animation:gd .6s infinite}.lb{width:100%;border-collapse:collapse;font-size:.8rem;margin-top:6px}.lb td{padding:3px 6px;border-bottom:1px dashed var(--lv2);text-align:left}.lb tr.me{background:#fff3b0;color:#555;font-weight:700}input.nm2{width:100%;padding:9px 12px;border:3px solid var(--lv2);border-radius:16px;font:inherit;background:var(--bg1);color:var(--ink);text-align:center;margin-top:6px}.seg{display:flex;gap:6px;margin:8px 0}.seg button{flex:1;border:3px solid var(--lv2);background:var(--card);color:var(--ink);border-radius:14px;padding:6px 4px;font:inherit;font-size:.74rem;font-weight:600;cursor:pointer}.seg button.on{border-color:var(--pk);background:var(--pk2)}.pc.rv{flex-basis:160px;text-align:left}.pc.rv .t b{color:var(--lv)}.cf{position:fixed;top:-30px;font-size:24px;z-index:60;pointer-events:none;animation:fall 2.4s linear forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(540deg)}}
+</style>
+</head>
+<body>
+<i class="bub" style="width:90px;height:90px;left:4%;top:20%"></i><i class="bub" style="width:60px;height:60px;right:6%;top:40%;animation-delay:2s"></i><i class="bub" style="width:120px;height:120px;right:20%;bottom:25%;animation-delay:4s"></i>
+<header>
+  <h1>💪 Muscle Buddy Puzzle</h1>
+  <span class="chip" id="tm">⏳ 00:00</span><span class="chip" id="sc">⭐ 0</span><span class="chip" id="pg">0/0</span>
+  <button class="btn lv" onclick="hint()">💡 Hint</button><button class="btn lv" onclick="pause()">⏸</button><button class="btn" onclick="showStart()">🏠</button>
+</header>
+<main>
+  <div class="dots" id="dots"></div>
+  <div class="pow" title="Overall progress"><i id="pw"></i></div><div class="pow" style="height:8px;margin-top:-4px" title="Speed bonus"><i id="tb" style="background:#7fdcb4;transition:none;width:0"></i></div><div class="mas"><div class="mi">💪</div><div class="say" id="say"></div></div>
+  <div class="bn" id="bn"></div>
+  <div class="board" id="board"></div>
+</main>
+<div class="tray">
+  <div class="th"><span>🧩 Puzzle pieces: drag to a slot, or tap a piece then tap a slot</span><span><button class="btn lv" style="padding:3px 10px;font-size:.75rem" onclick="shuf()">🔀 Shuffle</button> <span id="ms">Misses 0</span></span></div>
+  <div class="pcs" id="tray"></div>
+</div>
+<div class="cmb" id="cmb" style="display:none"></div><div class="ov" id="ov"><div class="md" id="md"></div></div>
+
+<script>
+const V='#9d4edf',P='#f08a6c',L='#ffc9b3',PL='#fff0e8',B='#5aa9f0',K='#ff3d8b';
+const S=x=>`<svg viewBox="0 0 100 70">${x}</svg>`;
+const ring=(cx,cy,R,r,n,f,s)=>Array.from({length:n},(_,i)=>{const a=i/n*6.283;return `<circle cx="${cx+R*Math.cos(a)}" cy="${cy+R*Math.sin(a)}" r="${r}" fill="${f}" stroke="${s}" stroke-width="1.2"/>`}).join('');
+const face=(x,y,s=1)=>`<g transform="translate(${x} ${y}) scale(${s})"><circle cx="-4" cy="0" r="1.7" fill="#4a3a5a"/><circle cx="4" cy="0" r="1.7" fill="#4a3a5a"/><circle cx="-7" cy="3" r="2" fill="#ff9ec4" opacity=".8"/><circle cx="7" cy="3" r="2" fill="#ff9ec4" opacity=".8"/><path d="M-2 3 q2 2.5 4 0" stroke="#4a3a5a" stroke-width="1.2" fill="none" stroke-linecap="round"/></g>`;
+const nuc=(x,y)=>`<ellipse cx="${x}" cy="${y}" rx="3.2" ry="2.2" fill="${V}"/>`;
+const str=(x1,x2,y1,y2)=>{let s='';for(let x=x1;x<x2;x+=5)s+=`<line x1="${x}" x2="${x}" y1="${y1}" y2="${y2}" stroke="#e0a58c" stroke-width="1.5"/>`;return s};
+function sarc(h){
+  const hi=k=>h===k||(h==='both'&&(k==='thick'||k==='thin'));
+  let r='';
+  if(h==='i')r+=`<rect x="10" y="6" width="20" height="58" fill="#ffd86b" opacity=".6"/><rect x="70" y="6" width="20" height="58" fill="#ffd86b" opacity=".6"/>`;
+  if(h==='a')r+=`<rect x="30" y="6" width="40" height="58" fill="#ffd86b" opacity=".6"/>`;
+  if(h==='h')r+=`<rect x="42" y="6" width="16" height="58" fill="#ffd86b" opacity=".6"/>`;
+  const T=[16,28,42,54],K3=[22,35,48];
+  T.forEach(y=>r+=`<line x1="10" x2="42" y1="${y}" y2="${y}" stroke="${hi('thin')?K:B}" stroke-width="2.5"/><line x1="90" x2="58" y1="${y}" y2="${y}" stroke="${hi('thin')?K:B}" stroke-width="2.5"/>`);
+  K3.forEach(y=>r+=`<line x1="30" x2="70" y1="${y}" y2="${y}" stroke="${hi('thick')?K:'#8a6cc9'}" stroke-width="5" stroke-linecap="round"/>`);
+  r+=`<line x1="50" x2="50" y1="8" y2="62" stroke="${h==='m'||h==='myom'?K:'#aaa'}" stroke-width="${h==='m'?4:1.5}"/>`;
+  [10,90].forEach(x=>r+=`<line x1="${x}" x2="${x}" y1="6" y2="64" stroke="${h==='z'?K:'#444'}" stroke-width="${h==='z'?6:4}"/>`);
+  if(h==='titin')r+=`<path d="M10 9 l4 -4 l4 8 l4 -8 l4 8 l4 -8 l4 8 l4 -8 l4 8 l4 -8 l2 4" stroke="${K}" stroke-width="2.4" fill="none"/>`;
+  if(h==='neb')T.forEach(y=>r+=`<line x1="10" x2="42" y1="${y+2.5}" y2="${y+2.5}" stroke="${K}" stroke-width="1.6" stroke-dasharray="3 2"/>`);
+  if(h==='tmod')T.forEach(y=>r+=`<circle cx="42" cy="${y}" r="3.4" fill="${K}"/><circle cx="58" cy="${y}" r="3.4" fill="${K}"/>`);
+  if(h==='mybpc')K3.forEach(y=>[34,40,60,66].forEach(x=>r+=`<line x1="${x}" x2="${x}" y1="${y-6}" y2="${y+6}" stroke="${K}" stroke-width="2"/>`));
+  if(h==='actn')T.forEach(y=>r+=`<circle cx="10" cy="${y}" r="3.6" fill="${K}"/><circle cx="90" cy="${y}" r="3.6" fill="${K}"/>`);
+  if(h==='myom')K3.forEach(y=>r+=`<circle cx="50" cy="${y}" r="3.6" fill="${K}"/>`);
+  if(h==='dys')r+=`<rect x="2" y="65" width="96" height="4" rx="2" fill="${K}"/><line x1="10" x2="10" y1="56" y2="65" stroke="${K}" stroke-width="2.5" stroke-dasharray="2 1.5"/><line x1="90" x2="90" y1="56" y2="65" stroke="${K}" stroke-width="2.5" stroke-dasharray="2 1.5"/>`;
+  return S(r);
+}
+const art={
+ whole:S(`<path d="M4 35 Q30 6 60 14 Q86 18 96 35 Q86 52 60 56 Q30 64 4 35Z" fill="${L}" stroke="${P}" stroke-width="3"/>${[18,28,38,48].map(y=>`<path d="M14 ${y} Q50 ${y-9} 88 ${y}" stroke="#e8967a" stroke-width="1.6" fill="none"/>`).join('')}${face(50,38)}`),
+ epi:S(`<ellipse cx="50" cy="35" rx="43" ry="31" fill="${L}" stroke="${V}" stroke-width="7"/>${ring(50,35,0,12,1,PL,P)}${ring(33,34,0,10,1,PL,P)}${ring(67,34,0,10,1,PL,P)}`),
+ peri:S(`<ellipse cx="50" cy="35" rx="45" ry="32" fill="${PL}" stroke="#e5b49f" stroke-width="2"/><circle cx="50" cy="35" r="23" fill="${L}" stroke="${V}" stroke-width="5"/>${ring(50,35,12,5,6,P,PL)}${ring(50,35,0,5,1,P,PL)}`),
+ endo:S(`${ring(50,35,26,9,6,PL,'#e0a58c')}<circle cx="50" cy="35" r="14" fill="${L}" stroke="${V}" stroke-width="4" stroke-dasharray="5 2.5"/>${face(50,36,.8)}`),
+ fasc:S(`<circle cx="50" cy="35" r="31" fill="${PL}" stroke="${V}" stroke-width="3"/>${ring(50,35,17,7,7,P,L)}${ring(50,35,0,7,1,P,L)}`),
+ fiber:S(`<rect x="5" y="18" width="90" height="34" rx="17" fill="${L}" stroke="${P}" stroke-width="2.5"/>${str(16,40,22,48)}${str(62,86,22,48)}${nuc(22,21)}${nuc(48,49)}${nuc(78,21)}${face(51,34)}`),
+ fibril:S(`<rect x="5" y="22" width="90" height="26" rx="4" fill="${PL}" stroke="${P}" stroke-width="2"/>${Array.from({length:9},(_,i)=>`<rect x="${9+i*10}" y="22" width="5" height="26" fill="#8a6cc9" opacity=".8"/>`).join('')}`),
+ sarc:sarc('z'),both:sarc('both'),
+ z:sarc('z'),i:sarc('i'),a:sarc('a'),h:sarc('h'),m:sarc('m'),thick:sarc('thick'),thin:sarc('thin'),
+ titin:sarc('titin'),neb:sarc('neb'),dys:sarc('dys'),actn:sarc('actn'),tmod:sarc('tmod'),myom:sarc('myom'),mybpc:sarc('mybpc'),
+ skel:S(`<rect x="4" y="20" width="92" height="30" rx="15" fill="${L}" stroke="${P}" stroke-width="2.5"/>${str(14,36,24,46)}${str(66,88,24,46)}${nuc(18,23)}${nuc(42,47)}${nuc(64,23)}${nuc(84,47)}${face(52,35)}`),
+ card:S(`<path d="M6 28 L40 28 L56 12 L94 12 L94 26 L66 36 L94 48 L94 60 L56 60 L40 42 L6 42 Z" fill="${L}" stroke="${P}" stroke-width="2.5" stroke-linejoin="round"/>${str(10,36,30,40)}${str(62,90,16,24)}${str(62,90,50,58)}<ellipse cx="22" cy="35" rx="4" ry="3" fill="${V}"/><line x1="40" x2="40" y1="28" y2="42" stroke="${K}" stroke-width="3"/>${face(76,36,.8)}`),
+ smooth:S(`<path d="M4 35 Q50 -4 96 35 Q50 74 4 35Z" fill="${L}" stroke="${P}" stroke-width="2.5"/><ellipse cx="50" cy="26" rx="9" ry="5" fill="${V}"/>${face(50,42)}`),
+ idisc:S(`<rect x="4" y="16" width="44" height="38" rx="9" fill="${L}" stroke="${P}" stroke-width="2.5"/><rect x="52" y="16" width="44" height="38" rx="9" fill="${L}" stroke="${P}" stroke-width="2.5"/><path d="M50 12 L45 24 L55 32 L45 42 L55 50 L50 60" fill="none" stroke="${K}" stroke-width="4" stroke-linejoin="round"/>${str(10,36,22,32)}${str(60,88,22,32)}${face(26,44,.7)}${face(74,44,.7)}`),
+ dense:S(`<rect x="4" y="10" width="92" height="50" rx="25" fill="${PL}" stroke="${P}" stroke-width="2.5"/><path d="M20 24 L44 36 L70 22 M26 50 L48 36 L78 50" stroke="#8a6cc9" stroke-width="2" fill="none"/>${[[20,24],[44,36],[70,22],[26,50],[78,50]].map(([x,y])=>`<circle cx="${x}" cy="${y}" r="5" fill="${K}"/>`).join('')}`),
+ calm:S(`<circle cx="24" cy="35" r="14" fill="#ffd86b"/><text x="24" y="39" font-size="10" font-weight="700" text-anchor="middle" fill="#444">Ca²⁺</text><path d="M40 35 H56" stroke="#444" stroke-width="3" stroke-linecap="round"/><path d="M56 20 q24 -10 32 8 q8 18 -12 24 q-22 5 -20 -32Z" fill="${V}"/><text x="73" y="40" font-size="9" font-weight="700" text-anchor="middle" fill="#fff">CaM</text>`)
+};
+const stages=[
+ {t:"Stage 1 🌸 Skeletal Muscle Hierarchy (Structural Hierarchy)",
+  fact:"Whole muscle → Fascicle → Muscle fiber → Myofibril → Sarcomere → Myofilaments. Connective tissue layers from the outside in: Epimysium → Perimysium → Endomysium.",
+  items:[
+  ["whole","Whole Muscle","The entire muscle, made of many fascicles bundled together"],
+  ["epi","Epimysium","Outermost connective tissue layer wrapping the whole muscle (dense connective tissue, deep fascia)"],
+  ["peri","Perimysium","Connective tissue sheath around each fascicle (bundle of muscle fibers)"],
+  ["fasc","Fascicle","A small bundle formed by many muscle fibers grouped together"],
+  ["endo","Endomysium","Thin connective tissue layer wrapping each individual muscle fiber"],
+  ["fiber","Muscle Fiber","Long cylindrical cell with many nuclei located at the cell edge"],
+  ["fibril","Myofibril","Cylindrical thread running parallel along the cell, filling most of its volume"],
+  ["sarc","Sarcomere","Contractile unit from one Z disc to the next, giving the light-dark striped look"],
+  ["both","Myofilaments","Protein filaments inside the sarcomere: myosin (thick) and actin (thin)"]]},
+ {t:"Stage 2 🍬 Sarcomere Structure",
+  fact:"Z disc = boundary • I band = thin filaments only • A band = length of the thick filaments • H zone = center of the A band • M line = middle line • Thick = myosin (motor protein that uses ATP) • Thin = actin + tropomyosin + troponin (TnC binds Ca²⁺, TnI inhibits, TnT binds tropomyosin).",
+  items:[
+  ["z","Z Disc","Boundary plate of the sarcomere where thin filaments are anchored"],
+  ["i","I Band","Light band containing only thin filaments, spanning across the Z disc"],
+  ["a","A Band","Dark band whose length equals the thick filaments"],
+  ["h","H Zone","Central region of the A band containing only thick filaments"],
+  ["m","M Line","Middle line of the sarcomere that holds the thick filaments in register"],
+  ["thick","Thick Filament","Myosin, a motor protein that converts chemical energy from ATP into mechanical work; has a long tail and globular heads"],
+  ["thin","Thin Filament","Actin (G-actin strung into a double-helical F-actin) + tropomyosin + troponin"]]},
+ {t:"Stage 3 🍓 Helper Proteins of the Sarcomere",
+  fact:"Titin = elastic spring from Z to M • Nebulin = sets thin filament length • α-Actinin = anchors at the Z disc • Tropomodulin = caps thin filament ends • Myomesin = holds the M line • MyBP-C = binds myosin • Dystrophin = links actin to the cell membrane.",
+  items:[
+  ["titin","Titin","Giant spring-like protein stretching from the Z disc to the M line, giving elasticity"],
+  ["neb","Nebulin","Long protein running along the thin filament that sets its length"],
+  ["actn","α-Actinin","Anchors the ends of the thin filaments at the Z disc"],
+  ["tmod","Tropomodulin","Caps the free (pointed) end of the thin filament"],
+  ["myom","Myomesin","Cross-links the thick filaments together at the M line"],
+  ["mybpc","Myosin-binding protein C","Binds myosin on the thick filament within the A band"],
+  ["dys","Dystrophin","Links actin filaments to the cell membrane (sarcolemma)"]]},
+ {t:"Stage 4 🍑 The Three Types of Muscle",
+  fact:"Skeletal: long cylindrical, multinucleated, striated • Cardiac: branched, 1-2 nuclei, intercalated discs • Smooth: spindle-shaped, 1 nucleus, no sarcomeres, uses dense bodies and calmodulin.",
+  items:[
+  ["skel","Skeletal Muscle Fiber","Long cylindrical cell, many nuclei at the edge, striated, with T-tubules"],
+  ["card","Cardiomyocyte","Short branched cell with 1-2 central nuclei, striated, with larger T-tubules"],
+  ["smooth","Smooth Muscle Cell","Spindle-shaped cell with tapered ends, 1 central nucleus, no striations"],
+  ["idisc","Intercalated Disc","Junction between cardiac cells with desmosomes (strength) and gap junctions (electrical signal)"],
+  ["dense","Dense Bodies","Protein anchor points in smooth muscle cytoplasm that act in place of Z discs"],
+  ["calm","Calmodulin","Smooth muscle protein that binds Ca²⁺ to trigger contraction instead of troponin"]]}
+];
+const COL=['#ff9ec4','#9b8cff','#7fdcb4','#ffc46b','#6ec6ff','#ff9f8a'];
+const PRAISE=['Great job! 🎉','Correct! ✨','Awesome! 🌟','Super! 💖','Yes! 👏'];
+let cur=0,sel=null,done=0,miss=0,tot=0,sec=0,timer=null,totMiss=0,score=0,combo=0,hints=0,goldId='',lastT=Date.now(),maxC=0,left=0,playing=false,diff=1,rev=false,player='';
+const DIFF=[{n:'Easy',s:25,m:1},{n:'Normal',s:15,m:1.5},{n:'Hard',s:10,m:2}];
+try{player=localStorage.getItem('mb_name')||''}catch(e){}
+const $=id=>document.getElementById(id);
+const say=t=>$('say').innerHTML=t;
+function fmt(s){s=Math.max(0,s);return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0')}
+function showT(){$('tm').textContent='⏳ '+fmt(left);$('tm').classList.toggle('low',playing&&left<=10)}
+function tick(){clearInterval(timer);timer=setInterval(()=>{if(!playing)return;left--;sec++;showT();if(left<=0){left=0;showT();gameOver()}},1000)}
+function load(i){
+  const st=stages[i];cur=i;sel=null;done=0;miss=0;tot=st.items.length;rev=i%2===1;left=tot*DIFF[diff].s;playing=true;showT();goldId=st.items[Math.floor(Math.random()*tot)][0];lastT=Date.now();bar();pw();
+  $('bn').textContent=st.t+(rev?' • 🔄 Reverse round: match each clue to its picture':'');$('pg').textContent=`🧩 0/${tot}`;$('ms').textContent='Misses 0';$('sc').textContent='⭐ '+score;
+  $('dots').innerHTML=stages.map((_,k)=>`<i class="${k<i?'dn':k===i?'on':''}"></i>`).join('');
+  say(i===0?'Hi! I am Muscle Buddy 💪 Read the clue in each slot, then pick the matching picture.<br>⚡ Place fast for a bonus • Golden piece ✨ = x2 • 5-combo = Fever mode 🔥':(rev?'Reverse round! 🔄 The slots show pictures now. Pick the clue card that matches!':'New stage! Ready to go? 🚀'));
+  const b=$('board'),t=$('tray');b.innerHTML='';t.innerHTML='';
+  [...st.items].sort(()=>Math.random()-.5).forEach(([id,nm,ds],n)=>{
+    const s=document.createElement('div');s.className='slot';s.dataset.id=id;s.style.setProperty('--c',COL[n%6]);
+    s.innerHTML=`<span class="n">${n+1}</span>`+(rev?`<div class="ar">${art[id]}</div><div class="ds">❓ Which clue matches?</div>`:`<div class="q">🧩</div><div class="ds">${ds}</div>`);
+    s.addEventListener('dragover',e=>{e.preventDefault();s.classList.add('over')});
+    s.addEventListener('dragleave',()=>s.classList.remove('over'));
+    s.addEventListener('drop',e=>{e.preventDefault();s.classList.remove('over');place(e.dataTransfer.getData('text'),s)});
+    s.addEventListener('click',()=>{if(sel)place(sel,s);else if(!s.classList.contains('ok'))say('Pick a piece from the tray below first 👇')});
+    b.appendChild(s)});
+  [...st.items].sort(()=>Math.random()-.5).forEach(([id,nm,ds])=>{
+    const p=document.createElement('div');p.className='pc'+(id===goldId?' gold':'')+(rev?' rv':'');p.draggable=true;p.id='pc-'+id;
+    p.innerHTML=rev?`<div class="t"><b>${nm}</b><br>${ds}</div>`:`<div class="ar">${art[id]}</div><div class="t">${nm}</div>`;
+    p.addEventListener('dragstart',e=>{e.dataTransfer.setData('text',id);sel=id});
+    p.addEventListener('click',()=>{document.querySelectorAll('.pc').forEach(x=>x.classList.remove('sel'));if(sel===id)sel=null;else{sel=id;p.classList.add('sel');say(`Selected <b>${nm}</b>. Now tap the slot that matches.`)}});
+    t.appendChild(p)});
+}
+function hint(){
+  if(!sel){say('Tap a piece first, then I will point out its slot 💡');return}
+  const s=[...document.querySelectorAll('.slot')].find(x=>x.dataset.id===sel);
+  if(s&&!s.classList.contains('ok')){s.classList.add('glow');setTimeout(()=>s.classList.remove('glow'),2900);score=Math.max(0,score-20);hints++;$('sc').textContent='⭐ '+score;say('The glowing slot is the answer (-20 points) 💡')}
+}
+function place(id,slot){
+  if(slot.classList.contains('ok')||!id)return;
+  if(slot.dataset.id!==id){miss++;totMiss++;combo=0;left=Math.max(1,left-3);showT();score=Math.max(0,score-30);$('sc').textContent='⭐ '+score;$('ms').textContent='Misses '+miss;slot.classList.add('shake');setTimeout(()=>slot.classList.remove('shake'),400);say('Oops, not quite! Read the clue again 🥺');beep(0);mood('😵‍💫');cb();return}
+  const it=stages[cur].items.find(x=>x[0]===id);
+  slot.classList.add('ok');
+  slot.innerHTML=`<div class="ar">${art[id]}</div><div class="nm">${it[1]}</div><div class="ds">${it[2]}</div>`;
+  $('pc-'+id).remove();sel=null;done++;combo++;maxC=Math.max(maxC,combo);
+  const sp=Math.max(0,Math.round((10000-(Date.now()-lastT))/10000*60)),g=id===goldId?2:1,gain=Math.round((100+(combo>1?combo*10:0)+sp)*g*DIFF[diff].m);
+  score+=gain;left+=3;showT();burst(slot,g>1?'🌟':'✨');flt(slot,'+'+gain);mood(combo>2?'🔥':'🥰');pw();cb();lastT=Date.now();bar();
+  $('sc').textContent='⭐ '+score;$('pg').textContent=`🧩 ${done}/${tot}`;
+  say(`${PRAISE[done%5]} <b>${it[1]}</b>${combo>1?` • Combo x${combo} 🔥`:''}${sp>30?' ⚡Super fast!':''}${g>1?' 🌟Golden piece x2!':''}`);beep(combo);
+  if(done===tot){playing=false;setTimeout(win,500)}
+}
+function mood(e){const m=document.querySelector('.mi');m.textContent=e;clearTimeout(m.t);m.t=setTimeout(()=>m.textContent='💪',1500)}
+function pw(){$('pw').style.width=((cur+done/tot)/stages.length*100)+'%'}
+function bar(){const b=$('tb');b.style.transition='none';b.style.width='100%';b.offsetWidth;b.style.transition='width 10s linear';b.style.width='0'}
+function cb(){const c=$('cmb');c.style.display=combo>=2?'block':'none';c.textContent='🔥 Combo x'+combo;c.style.animation='none';c.offsetWidth;c.style.animation='';document.body.classList.toggle('fever',combo>=5)}
+function burst(el,e){const r=el.getBoundingClientRect(),x=r.left+r.width/2,y=r.top+r.height/2;for(let i=0;i<10;i++){const s=document.createElement('span');s.className='sp';s.textContent=e;s.style.left=x+'px';s.style.top=y+'px';const a=i/10*6.283;s.style.setProperty('--dx',Math.cos(a)*75+'px');s.style.setProperty('--dy',Math.sin(a)*75+'px');document.body.appendChild(s);setTimeout(()=>s.remove(),950)}}
+function flt(el,t){const r=el.getBoundingClientRect(),s=document.createElement('span');s.className='sp';s.style.fontSize='1.4rem';s.textContent=t;s.style.left=r.left+r.width/2-20+'px';s.style.top=r.top+'px';s.style.setProperty('--dx','0px');s.style.setProperty('--dy','-70px');document.body.appendChild(s);setTimeout(()=>s.remove(),950)}
+function beep(ok){try{const c=new(window.AudioContext||window.webkitAudioContext)(),o=c.createOscillator(),g=c.createGain();o.type=ok?'triangle':'sine';const f=ok?[523,587,659,784,880,1047][Math.min(ok-1,5)]:200;o.frequency.setValueAtTime(f,c.currentTime);if(ok)o.frequency.exponentialRampToValueAtTime(f*1.5,c.currentTime+.12);g.gain.setValueAtTime(.09,c.currentTime);g.gain.exponentialRampToValueAtTime(.001,c.currentTime+.22);o.connect(g);g.connect(c.destination);o.start();o.stop(c.currentTime+.22)}catch(e){}}
+function confetti(){const e=['🎉','⭐','💖','🌸','✨','🍬'];for(let i=0;i<28;i++){const s=document.createElement('span');s.className='cf';s.textContent=e[i%6];s.style.left=Math.random()*100+'vw';s.style.animationDelay=Math.random()*.8+'s';document.body.appendChild(s);setTimeout(()=>s.remove(),3500)}}
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let mem=[];
+function lbGet(){try{return JSON.parse(localStorage.getItem('mb_lb')||'[]')}catch(e){return mem}}
+function lbSave(e){let a=lbGet();a.push(e);a.sort((x,y)=>y.score-x.score);a=a.slice(0,10);mem=a;try{localStorage.setItem('mb_lb',JSON.stringify(a))}catch(x){}return a}
+function lbHtml(a,me,n){a=a.slice(0,n||10);return a.length?`<table class="lb">${a.map((r,i)=>`<tr class="${r===me?'me':''}"><td>${['🥇','🥈','🥉'][i]||i+1}</td><td>${esc(r.name)}</td><td>${r.score}</td><td>${DIFF[r.d].n}</td></tr>`).join('')}</table>`:'<p>No scores yet. Be the first! 🌟</p>'}
+function showStart(){
+  playing=false;clearInterval(timer);
+  $('md').innerHTML=`<div style="font-size:2.6rem">💪</div><h2>Muscle Buddy Puzzle</h2>
+  <p>Match every picture with its clue before time runs out!</p>
+  <input class="nm2" id="pn" maxlength="12" placeholder="Your name" value="${esc(player)}">
+  <div class="seg">${DIFF.map((d,k)=>`<button class="${k===diff?'on':''}" onclick="setDiff(${k})">${d.n}<br>${d.s}s/piece • x${d.m}</button>`).join('')}</div>
+  <div class="fact">⏳ Countdown per stage • ✅ +3s per correct match • ❌ -3s per mistake<br>🔄 Every 2nd stage is a <b>Reverse round</b> (pictures are the questions) • 🔀 Shuffle anytime</div>
+  <h3 style="margin:10px 0 0;color:var(--lv)">🏆 Top Scores</h3>${lbHtml(lbGet(),null,5)}
+  <button class="btn" style="margin-top:12px;font-size:1.05rem;padding:10px 30px" onclick="startGame()">Start ▶</button>`;
+  $('ov').style.display='flex';
+}
+function setDiff(k){diff=k;document.querySelectorAll('.seg button').forEach((b,j)=>b.classList.toggle('on',j===k))}
+function startGame(){player=($('pn').value||'Player').trim().slice(0,12)||'Player';try{localStorage.setItem('mb_name',player)}catch(e){}restart()}
+function pause(){if(!playing)return;playing=false;$('md').innerHTML=`<div style="font-size:2.6rem">⏸</div><h2>Paused</h2><p>Time is frozen. Take a breath! 😌</p><button class="btn" style="margin-top:8px" onclick="resume()">Resume ▶</button> <button class="btn lv" style="margin-top:8px" onclick="showStart()">🏠 Quit</button>`;$('ov').style.display='flex'}
+function resume(){$('ov').style.display='none';playing=true;lastT=Date.now()}
+document.addEventListener('visibilitychange',()=>{if(document.hidden&&playing)pause()});
+function shuf(){if(!playing)return;const b=$('board'),t=$('tray');[...b.children].sort(()=>Math.random()-.5).forEach(e=>b.appendChild(e));let n=1;[...b.children].forEach(e=>{const k=e.querySelector('.n');if(k)k.textContent=n++});[...t.children].sort(()=>Math.random()-.5).forEach(e=>t.appendChild(e));say('Shuffled! 🔀 Everything moved around.')}
+function win(){
+  playing=false;confetti();
+  const n=miss<=1?3:miss<=4?2:1,last=cur===stages.length-1,tb=Math.round(left*3*DIFF[diff].m),pf=miss==0?200:0;
+  score+=tb+pf;$('sc').textContent='⭐ '+score;
+  if(last){finish(true);return}
+  $('md').innerHTML=`<div style="font-size:2.6rem">💪</div><h2>Puzzle complete!</h2><div class="stars">${'⭐'.repeat(n)}${'☆'.repeat(3-n)}</div>
+  <p>⏳ Time bonus +${tb}${pf?` • 🏅 Perfect +${pf}`:''}<br>${miss} miss${miss==1?'':'es'} • Score ${score}</p>
+  <p>${maxC>=5?'🔥 Best combo x'+maxC:''}</p><div class="fact">📚 <b>Stage summary</b><br>${stages[cur].fact}</div>
+  <button class="btn" style="margin-top:12px;font-size:1rem;padding:10px 26px" onclick="nxt()">Next stage 🚀</button>`;
+  $('ov').style.display='flex';
+}
+function gameOver(){finish(false)}
+function finish(won){
+  playing=false;clearInterval(timer);
+  const e={name:player||'Player',score:score,d:diff,t:Date.now()},before=lbGet(),best=before.length?before[0].score:0;
+  const a=score>0?lbSave(e):before,rec=score>0&&score>best;
+  const rank=totMiss<=4?'Golden Anatomist 🏆':totMiss<=12?'Little Anatomist 🌟':'Hardworking Student 💪';
+  $('md').innerHTML=`<div style="font-size:2.6rem">${won?'🏆':'⏰'}</div><h2>${won?'Game complete! You are amazing!':'Time is up!'}</h2>
+  <p>Score <b>${score}</b> • ${DIFF[diff].n} • Total time ${fmt(sec)}<br>Stage reached ${won?stages.length:cur+1}/${stages.length} • Hints used ${hints}</p>
+  <p>${rec?'🎉 <b>New high score!</b><br>':''}${won?'<b>'+rank+'</b>':'So close! Try again 💪'}</p>
+  <h3 style="margin:8px 0 0;color:var(--lv)">🏆 Leaderboard</h3>${lbHtml(a,e)}
+  <button class="btn" style="margin-top:12px" onclick="restart()">Play again 🔄</button> <button class="btn lv" style="margin-top:12px" onclick="showStart()">🏠 Home</button>`;
+  if(rec)confetti();
+  $('ov').style.display='flex';
+}
+function nxt(){$('ov').style.display='none';load(cur+1)}
+function restart(){$('ov').style.display='none';sec=0;totMiss=0;score=0;combo=0;hints=0;maxC=0;cb();tick();load(0)}
+showT();showStart();
+</script>
+</body>
+</html>
